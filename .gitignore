@@ -1,0 +1,9 @@
+output/
+logs/
+*.parquet
+*.h5ad
+*.rds
+__pycache__/
+.Rhistory
+.Rproj.user/
+.env

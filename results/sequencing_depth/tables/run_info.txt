@@ -1,0 +1,19 @@
+Run: 2026-11-11 20:05
+Input: data/raw/MTG_snRNAseq_metadata.parquet
+Nuclei: 1,378,211
+Donors: 89
+Specimens: 229
+Subclasses: 24
+Median UMIs per nucleus (all): 18,642
+Median genes per nucleus (all): 5,428
+Checks:
+  Missing values in n_umis: 0
+  Missing values in n_genes: 0
+  Missing values in frac_mito: 0
+  Nuclei with 0 UMIs: 0
+  Nuclei with more genes than UMIs (impossible): 0
+  Nuclei with mitochondrial fraction outside [0, 1]: 0
+  Donor annotations that vary within a donor: none
+Verification against raw/X:
+  umis: raw/metadata ratio median 0.995 (range 0.992-0.997), Pearson r = 1.0000, 100% of 20 nuclei within 2%
+  genes: raw/metadata ratio median 0.992 (range 0.989-0.996), Pearson r = 1.0000, 100% of 20 nuclei within 2%

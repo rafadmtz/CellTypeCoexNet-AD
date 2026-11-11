@@ -1,0 +1,16 @@
+column,description
+nucleus_id,Unique nucleus identifier
+donor_id,Donor identifier
+specimen_id,Specimen (library) the nucleus comes from
+Class / Subclass / Supertype,"Cell type, from coarse to fine"
+Neurotypical reference,True for the 5 neurotypical reference donors
+ADNC / Cognitive status / Braak stage / ...,Donor clinical and neuropathological annotations
+n_umis,SEQUENCING DEPTH: total UMIs (unique RNA molecules) in the nucleus
+n_genes,Number of genes with at least one UMI in the nucleus
+frac_mito,Fraction of UMIs from mitochondrial genes (0 to 1)
+log10_umis / log10_genes,"log10 of n_umis / n_genes, for plotting"
+genes_per_umi,n_genes / n_umis: library complexity of the nucleus
+n_nuclei,(summaries) Number of nuclei in the group
+n_specimens,(summaries) Number of distinct specimens in the group
+umis_* / genes_*,"(summaries) mean, sd, min, q25, median, q75 and max"
+frac_mito_median,(summaries) Median mitochondrial fraction in the group

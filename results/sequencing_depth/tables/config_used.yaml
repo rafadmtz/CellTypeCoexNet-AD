@@ -1,0 +1,5 @@
+anndata_url: https://datasets.cellxgene.cziscience.com/92b37feb-aa2c-40d7-bd90-0a9b5ddb3b27.h5ad
+metadata: data/raw/MTG_snRNAseq_metadata.parquet
+gene_annotation: data/raw/MTG_snRNAseq_var.parquet
+output_dir: results/sequencing_depth/tables
+verify_nuclei: 0

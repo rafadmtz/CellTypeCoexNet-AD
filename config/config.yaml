@@ -1,0 +1,10 @@
+# Sequencing depth (src/preprocessing/sequencing_depth.py and
+# src/preprocessing/get_MTG_metadata_streaming.py).
+# Paths are relative to the repository root.
+sequencing_depth:
+  # CELLxGENE h5ad the metadata was extracted from (also used by --verify)
+  anndata_url: "https://datasets.cellxgene.cziscience.com/92b37feb-aa2c-40d7-bd90-0a9b5ddb3b27.h5ad"
+  metadata: "data/raw/MTG_snRNAseq_metadata.parquet"       # one row per nucleus (.parquet or .csv)
+  gene_annotation: "data/raw/MTG_snRNAseq_var.parquet"
+  output_dir: "results/sequencing_depth/tables"
+  verify_nuclei: 0                                          # nuclei checked against raw/X (0 = no check)

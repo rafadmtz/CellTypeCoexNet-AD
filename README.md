@@ -75,6 +75,7 @@ CellTypeCoexNet-AD/
 |---|---|
 | SEA-AD MTG expression matrix (.h5ad) | Whole-taxonomy snRNA-seq input from [CELLxGENE](https://cellxgene.cziscience.com/), including donor and cell-type annotations. Dataset ID: `[TODO]`. |
 | [Data retrieval and preprocessing](src/preprocessing/) | Scripts for retrieving the MTG dataset and counting nuclei by donor, subclass, and supertype. |
+| [Sequencing depth](docs/sequencing_depth.md) | Depth (UMIs), detected genes and mitochondrial fraction for every nucleus, summarized by donor, subclass and supertype. |
 | [Analysis code](src/utils/) | Python and R functions for mutual information estimation, network topology, gene-level changes, community detection, and functional enrichment. |
 
 Expression data are not redistributed in this repository. When using them, cite Gabitto et al. (2024).

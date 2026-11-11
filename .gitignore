@@ -7,3 +7,5 @@ __pycache__/
 .Rhistory
 .Rproj.user/
 .env
+# Local data (never committed)
+data/

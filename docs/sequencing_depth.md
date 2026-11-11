@@ -12,6 +12,13 @@ The cell metadata of the SEA-AD MTG dataset (CELLxGENE), one row per nucleus.
 It already contains `Number of UMIs`, `Genes detected` and
 `Fraction mitochrondrial UMIs`, so the expression matrix is not needed.
 
+These values were computed by SEA-AD on its full gene set. The CELLxGENE
+expression matrix keeps 35,483 genes, so summing a nucleus's row of `raw/X`
+gives slightly lower values. A check of 20 random nuclei gave raw/metadata
+ratios of 0.992–0.997 for UMIs and 0.989–0.996 for detected genes, with a
+correlation of 1.0, so the metadata and the matrix rows are aligned. The
+depth reported here is the SEA-AD value.
+
 The metadata can be obtained in two ways:
 
 1. `src/preprocessing/get_MTG_metadata_streaming.py` reads only the metadata
@@ -61,7 +68,7 @@ Written to `results/sequencing_depth/tables/`.
 | `depth_column_dictionary.csv` | Description of every column |
 | `run_info.txt` | Date, input, counts and quality checks |
 | `config_used.yaml` | Configuration used in the run |
-| `verification_raw_counts.csv` | Only with `--verify`: metadata depth vs. raw counts |
+| `verification_raw_counts.csv` | Only with `--verify`: metadata depth vs. raw counts, with raw/metadata ratios |
 
 All nuclei are kept, including Reference donors. Filter with `ADNC` or
 `Neurotypical reference` when plotting.

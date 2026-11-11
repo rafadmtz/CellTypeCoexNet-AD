@@ -9,7 +9,10 @@ in a nucleus. The number of detected genes and the mitochondrial fraction are
 reported as well. All three come from the cell metadata ("Number of UMIs",
 "Genes detected", "Fraction mitochrondrial UMIs"), so the expression matrix
 is not needed. With --verify N, N random nuclei are checked against the raw
-count matrix (raw/X), reading only those rows from the h5ad file.
+count matrix (raw/X), reading only those rows from the h5ad file. The metadata
+values are slightly higher than raw/X row sums (about 0.5% for UMIs and 1% for
+genes) because SEA-AD computed them on its full gene set, while the CELLxGENE
+matrix keeps 35,483 genes.
 
 All nuclei are kept, including those from Reference donors. Use the
 "Neurotypical reference" or "ADNC" column to exclude them downstream.
@@ -239,6 +242,41 @@ def verify_with_raw_counts(depth: pd.DataFrame, n: int, url: str, seed: int = 0)
     return pd.DataFrame(checks)
 
 
+def summarize_verification(verification: pd.DataFrame, tolerance: float = 0.02) -> list:
+    """
+    Summarize how closely the metadata depth agrees with the raw/X row sums.
+
+    Exact equality is not expected: SEA-AD computed "Number of UMIs" and
+    "Genes detected" on its full gene set, while the CELLxGENE matrix keeps
+    35,483 genes, so raw/X row sums are slightly lower. Rows are considered
+    aligned when the correlation is close to 1 and ratios are within tolerance.
+
+    Parameters:
+
+    verification : pd.DataFrame
+        Output of verify_with_raw_counts(). Ratio columns are added in place.
+    tolerance : float
+        Maximum relative difference counted as agreement (default 2%).
+
+    Returns:
+
+    list
+        One message per summary line.
+    """
+    verification["ratio_umis"] = verification["umis_raw_counts"] / verification["umis_metadata"]
+    verification["ratio_genes"] = verification["genes_raw_counts"] / verification["genes_metadata"]
+    messages = []
+    for metric in ["umis", "genes"]:
+        ratio = verification[f"ratio_{metric}"]
+        within = ((ratio - 1).abs() <= tolerance).mean()
+        corr = verification[f"{metric}_metadata"].corr(verification[f"{metric}_raw_counts"])
+        messages.append(
+            f"  {metric}: raw/metadata ratio median {ratio.median():.3f} "
+            f"(range {ratio.min():.3f}-{ratio.max():.3f}), Pearson r = {corr:.4f}, "
+            f"{within:.0%} of {len(ratio)} nuclei within {tolerance:.0%}")
+    return messages
+
+
 COLUMN_DICTIONARY = [
     ("nucleus_id", "Unique nucleus identifier"),
     ("donor_id", "Donor identifier"),
@@ -305,12 +343,8 @@ def main():
     if n_verify > 0:
         print(f"Checking {n_verify} nuclei against raw/X...")
         verification = verify_with_raw_counts(depth, n_verify, config["anndata_url"])
+        info += ["Verification against raw/X:", *summarize_verification(verification)]
         verification.to_csv(out_dir / "verification_raw_counts.csv", index=False)
-        umis_ok = np.isclose(verification["umis_metadata"], verification["umis_raw_counts"]).mean()
-        genes_ok = (verification["genes_metadata"] == verification["genes_raw_counts"]).mean()
-        info += ["Verification against raw/X:",
-                 f"  UMIs match in {umis_ok:.0%} of {len(verification)} nuclei",
-                 f"  Genes match in {genes_ok:.0%} of {len(verification)} nuclei"]
 
     (out_dir / "run_info.txt").write_text("\n".join(info) + "\n")
     print("\n".join(info))
